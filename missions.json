@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "name": "Mariner 2",
+        "year": "1962",
+        "country": "Estados Unidos",
+        "destination": "Vênus"
+    },
+    {
+        "id": 2,
+        "name": "Mariner 3",
+        "year": "1963",
+        "country": "Russia",
+        "destination": "Marte"
+    }
+
+]
