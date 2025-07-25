@@ -1,7 +1,7 @@
-const fs = require("fs").promises;
-const path = require("path");
+const fs = require('fs').promises;
+const path = require('path');
 
-const MISSION_DATA_PATH = "../../data/missions.json";
+const MISSION_DATA_PATH = '../../data/missions.json';
 
 async function readMissionsData() {
   try {
@@ -9,17 +9,20 @@ async function readMissionsData() {
     const missions = JSON.parse(data);
     return missions;
   } catch (err) {
-    console.error(`Erro na leitura do arquivo: ${err}`);
+    console.error(`Erro na leitura do arquivo: ${err.message}`);
   }
 }
 
 async function writeNewMissionData(newMission) {
   try {
     const oldMissions = await readMissionsData();
-    const allMissions = JSON.stringify([...oldMissions, newMission]);
+    const allMissions = JSON.stringify([
+      ...oldMissions,
+      { id: Date.now(), ...newMission },
+    ]);
     await fs.writeFile(path.resolve(__dirname, MISSION_DATA_PATH), allMissions);
   } catch (err) {
-    console.error(`Erro na escrita do arquivo ${err}`);
+    console.error(`Erro na escrita do arquivo ${err.message}`);
   }
 }
 
