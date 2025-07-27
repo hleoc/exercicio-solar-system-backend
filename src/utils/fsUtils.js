@@ -28,4 +28,33 @@ async function writeNewMissionData(newMission) {
   }
 }
 
-module.exports = { readMissionsData, writeNewMissionData };
+async function updateMissionData(id, updatedMissionData) {
+  const oldMissions = await readMissionsData();
+  const updatedMission = { id, ...updatedMissionData };
+  const updatedMissions = oldMissions.reduce((missionsList, currentMission) => {
+    if (currentMission.id === updatedMission.id) {
+      return [...missionsList, updatedMission];
+    }
+    return [...missionsList, currentMission];
+  }, []);
+  const updatedData = JSON.stringify(updatedMissions);
+  try {
+    await fs.writeFile(path.resolve(__dirname, MISSION_DATA_PATH), updatedData);
+    return updatedMission;
+  } catch (err) {
+    console.error(`Erro na escrita do arquivo ${err.message}`);
+  }
+}
+
+async function deleteMissionData(id) {
+  const oldMissions = await readMissionsData();
+  const updatedMissions = oldMissions.filter((currentMission) => currentMission.id !== id);
+  const updatedData = JSON.stringify(updatedMissions);
+  try {
+    await fs.writeFile(path.resolve(__dirname, MISSION_DATA_PATH), updatedData);
+  } catch (err) {
+    console.error(`Erro na escrita do arquivo ${err.message}`);
+  }
+} 
+
+module.exports = { readMissionsData, writeNewMissionData, updateMissionData, deleteMissionData };
